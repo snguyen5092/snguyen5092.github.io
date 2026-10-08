@@ -644,49 +644,49 @@ body {
 
   <div class="nav-title">Workspace</div>
 
-  <button class="nav-btn active" onclick="showHome()">
+  <button type="button" class="nav-btn active" onclick="showHome()">
     <span class="nav-icon">⌂</span>
     Dashboard
   </button>
 
   <div class="nav-title">Subjects</div>
 
-  <button class="nav-btn" onclick="openSubject('geometry')">
+  <button type="button" class="nav-btn" data-subject="geometry" onclick="openSubject('geometry')">
     <span class="nav-icon">△</span>
     Geometry
   </button>
 
-  <button class="nav-btn" onclick="openSubject('algebra2')">
+  <button type="button" class="nav-btn" data-subject="algebra2" onclick="openSubject('algebra2')">
     <span class="nav-icon">∑</span>
     Algebra 2
   </button>
 
-  <button class="nav-btn" onclick="openSubject('lit1')">
+  <button type="button" class="nav-btn" data-subject="lit1" onclick="openSubject('lit1')">
     <span class="nav-icon">📖</span>
     Literature 1
   </button>
 
-  <button class="nav-btn" onclick="openSubject('biology')">
+  <button type="button" class="nav-btn" data-subject="biology" onclick="openSubject('biology')">
     <span class="nav-icon">🧬</span>
     Biology
   </button>
 
-  <button class="nav-btn" onclick="openSubject('aphg')">
+  <button type="button" class="nav-btn" data-subject="aphg" onclick="openSubject('aphg')">
     <span class="nav-icon">🌎</span>
     AP Human Geography
   </button>
 
-  <button class="nav-btn" onclick="openSubject('civics')">
+  <button type="button" class="nav-btn" data-subject="civics" onclick="openSubject('civics')">
     <span class="nav-icon">⚖</span>
     Civics
   </button>
 
-  <button class="nav-btn" onclick="openSubject('spanish1')">
+  <button type="button" class="nav-btn" data-subject="spanish1" onclick="openSubject('spanish1')">
     <span class="nav-icon">🇪🇸</span>
     Spanish 1
   </button>
 
-  <button class="nav-btn" onclick="openSubject('spanish2')">
+  <button type="button" class="nav-btn" data-subject="spanish2" onclick="openSubject('spanish2')">
     <span class="nav-icon">🇪🇸</span>
     Spanish 2
   </button>
@@ -1102,10 +1102,10 @@ function makeQuestions(subjectKey) {
     const items = [
       ["Solve: 2x + 6 = 14.",["2","3","4","5"],2],
       ["What is the slope of y = 3x − 7?",["−7","3","7","10"],1],
-      ["Solve x² = 49.","[−7, 7]","[7]","[−49,49]","[−7]"],0],
+      ["Solve x² = 49.",["[−7, 7]","[7]","[−49,49]","[−7]"],0],
       ["What is the vertex of y = (x − 2)² + 3?",["(−2,3)","(2,−3)","(2,3)","(3,2)"],2],
       ["What is 2³ × 2²? ",["16","24","32","64"],2],
-      ["Simplify x³/x.","x","x²","x³","x⁴"],1],
+      ["Simplify x³/x.",["x","x²","x³","x⁴"],1],
       ["What is log₁₀(100)?",["1","2","10","100"],1],
       ["An exponential function with a base greater than 1 represents:",["Decay","Growth","A constant","A linear relationship"],1],
       ["What is the common difference in 4, 9, 14, 19,...?",["4","5","9","14"],1],
@@ -1335,13 +1335,31 @@ Object.keys(subjects).forEach(key => {
 let currentSubject = null;
 let currentQuestion = 0;
 
-let progress = JSON.parse(
-  localStorage.getItem("studyhubProgress") || "{}"
-);
+function loadStorageObject(key) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (!raw) return {};
 
-let scores = JSON.parse(
-  localStorage.getItem("studyhubScores") || "{}"
-);
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" && !Array.isArray(parsed)
+      ? parsed
+      : {};
+  } catch (error) {
+    console.warn(`StudyHub could not read ${key}; resetting that data.`, error);
+    return {};
+  }
+}
+
+let progress = loadStorageObject("studyhubProgress");
+let scores = loadStorageObject("studyhubScores");
+
+function saveStorageObject(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.warn(`StudyHub could not save ${key}.`, error);
+  }
+}
 
 
 /* =========================================================
@@ -1414,13 +1432,15 @@ function updateStats() {
   document.getElementById("completedCount")
     .textContent = completed;
 
+  const validScores = Object.values(scores).filter(
+    score => score && Number.isFinite(score.total) && Number.isFinite(score.correct)
+  );
+
   const totalAnswered =
-    Object.values(scores)
-    .reduce((a,b) => a+b.total,0);
+    validScores.reduce((a,b) => a + b.total, 0);
 
   const totalCorrect =
-    Object.values(scores)
-    .reduce((a,b) => a+b.correct,0);
+    validScores.reduce((a,b) => a + b.correct, 0);
 
   if(totalAnswered) {
 
@@ -1444,6 +1464,11 @@ function updateStats() {
    ========================================================= */
 
 function openSubject(key) {
+
+  if (!subjects[key] || !questionBanks[key]) {
+    console.error("StudyHub: unknown subject:", key);
+    return;
+  }
 
   currentSubject = key;
   currentQuestion = 0;
@@ -1482,12 +1507,13 @@ function openSubject(key) {
   document.querySelectorAll(".nav-btn")
     .forEach(btn => btn.classList.remove("active"));
 
-  document.querySelectorAll(".nav-btn")
-    .forEach(btn => {
-      if(btn.textContent.trim().includes(s.title)) {
-        btn.classList.add("active");
-      }
-    });
+  const activeButton = document.querySelector(
+    `.nav-btn[data-subject="${key}"]`
+  );
+
+  if (activeButton) {
+    activeButton.classList.add("active");
+  }
 
   window.scrollTo({
     top: 0,
@@ -1529,9 +1555,28 @@ function buildUnits(key) {
 
 function renderQuestion() {
 
-  const bank = questionBanks[currentSubject];
+  if (!currentSubject || !questionBanks[currentSubject]) {
+    return;
+  }
 
+  const bank = questionBanks[currentSubject];
+  if (!Array.isArray(bank) || bank.length === 0) {
+    document.getElementById("questionText").textContent =
+      "No practice questions are available for this subject.";
+    document.getElementById("answers").innerHTML = "";
+    return;
+  }
+
+  currentQuestion = Math.max(0, Math.min(currentQuestion, bank.length - 1));
   const q = bank[currentQuestion];
+
+  if (!q || !Array.isArray(q.answers)) {
+    console.error("StudyHub: invalid question data", q);
+    document.getElementById("questionText").textContent =
+      "This question has invalid data.";
+    document.getElementById("answers").innerHTML = "";
+    return;
+  }
 
   document.getElementById("questionNumber")
     .textContent =
@@ -1602,10 +1647,7 @@ function answerQuestion(index,button) {
     correct
   };
 
-  localStorage.setItem(
-    "studyhubProgress",
-    JSON.stringify(progress)
-  );
+  saveStorageObject("studyhubProgress", progress);
 
   if(!scores[currentSubject]) {
     scores[currentSubject] = {
@@ -1631,10 +1673,7 @@ function answerQuestion(index,button) {
       });
   }
 
-  localStorage.setItem(
-    "studyhubScores",
-    JSON.stringify(scores)
-  );
+  saveStorageObject("studyhubScores", scores);
 
   const feedback =
     document.getElementById("feedback");
@@ -1660,10 +1699,11 @@ function answerQuestion(index,button) {
 function updateScoreDisplay() {
 
   const score =
-    scores[currentSubject] || {
-      correct: 0,
-      total: 0
-    };
+    scores[currentSubject] &&
+    Number.isFinite(scores[currentSubject].correct) &&
+    Number.isFinite(scores[currentSubject].total)
+      ? scores[currentSubject]
+      : { correct: 0, total: 0 };
 
   document.getElementById("scoreDisplay")
     .textContent =
@@ -1778,15 +1818,16 @@ function searchSite(value) {
 
       div.className = "result";
 
-      div.innerHTML = `
-        <div class="result-title">
-          ${match.title}
-        </div>
+      const title = document.createElement("div");
+      title.className = "result-title";
+      title.textContent = match.title;
 
-        <div class="result-meta">
-          ${match.meta}
-        </div>
-      `;
+      const meta = document.createElement("div");
+      meta.className = "result-meta";
+      meta.textContent = match.meta;
+
+      div.appendChild(title);
+      div.appendChild(meta);
 
       div.onclick = () => {
 
@@ -1824,8 +1865,13 @@ function showHome() {
   document.querySelectorAll(".nav-btn")
     .forEach(btn => btn.classList.remove("active"));
 
-  document.querySelector(".nav-btn")
-    .classList.add("active");
+  const dashboardButton = document.querySelector(
+    '.nav-btn[onclick="showHome()"]'
+  );
+
+  if (dashboardButton) {
+    dashboardButton.classList.add("active");
+  }
 
   buildDashboard();
 
@@ -1850,6 +1896,16 @@ function toggleSidebar() {
   document.getElementById("sidebar")
     .classList.toggle("open");
 }
+
+
+document.addEventListener("click", event => {
+  const search = document.querySelector(".search");
+  const results = document.getElementById("searchResults");
+
+  if (results && search && !search.contains(event.target) && !results.contains(event.target)) {
+    results.style.display = "none";
+  }
+});
 
 
 /* =========================================================
