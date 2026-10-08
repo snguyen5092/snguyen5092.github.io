@@ -1,18 +1,19 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ultimate High School Study Suite</title>
+    <title>Study Website</title>
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --text-dark: #1e293b;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
+            --bg-color: #0f172a; /* Dark sleek background */
+            --card-bg: #1e293b; /* Dark slate card containers */
+            --primary: #6366f1; /* Neon indigo accents */
+            --primary-hover: #4f46e5;
+            --text-dark: #f8fafc; /* Crisp white headers */
+            --text-muted: #94a3b8; /* Muted gray text */
+            --border: #334155;
+            --panel-bg: #1e293b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -22,10 +23,10 @@
             display: flex;
             min-height: 100vh;
         }
-        /* Sidebar */
+        /* Sidebar Navigation */
         nav {
             width: 260px;
-            background-color: #0f172a;
+            background-color: #020617;
             color: white;
             padding: 30px 20px;
             display: flex;
@@ -33,8 +34,9 @@
             gap: 10px;
             position: fixed;
             height: 100vh;
+            border-right: 1px solid var(--border);
         }
-        nav h2 { font-size: 1.2rem; margin-bottom: 20px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+        nav h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; }
         .nav-btn {
             background: transparent;
             color: #cbd5e1;
@@ -50,25 +52,26 @@
         .nav-btn:hover { background-color: #1e293b; color: white; }
         .nav-btn.active { background-color: var(--primary); color: white; }
         
-        /* Main Layout */
+        /* Main Layout Workspace */
         main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
         .page { display: none; }
         .page.active { display: block; }
-        h1 { font-size: 2.2rem; margin-bottom: 10px; color: #0f172a; }
+        h1 { font-size: 2.2rem; margin-bottom: 10px; color: var(--text-dark); }
         .subtitle { color: var(--text-muted); margin-bottom: 30px; }
 
-        /* Accordions */
+        /* Accordion Cards Layout */
         .unit-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 10px;
             margin-bottom: 15px;
             overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
         }
         .unit-header {
             padding: 18px 20px;
-            background: #ffffff;
+            background: #1e293b;
+            color: var(--text-dark);
             font-weight: 600;
             font-size: 1.1rem;
             cursor: pointer;
@@ -76,44 +79,46 @@
             justify-content: space-between;
             align-items: center;
         }
-        .unit-header:hover { background: #f8fafc; }
-        .unit-content { padding: 20px; display: none; background: #fafafa; border-top: 1px solid var(--border); }
+        .unit-header:hover { background: #334155; }
+        .unit-content { padding: 20px; display: none; background: #0f172a; border-top: 1px solid var(--border); }
         .unit-card.open .unit-content { display: block; }
         
+        /* Study Panel Design */
         .study-box {
-            background: #f1f5f9;
+            background: #1e293b;
             padding: 15px;
             border-left: 4px solid var(--primary);
             border-radius: 4px;
             margin-bottom: 20px;
         }
-        .study-box h4 { margin-bottom: 8px; color: #334155; }
-        .study-box ul { padding-left: 20px; font-size: 0.95rem; line-height: 1.5; color: #475569; }
+        .study-box h4 { margin-bottom: 8px; color: var(--text-dark); }
+        .study-box ul { padding-left: 20px; font-size: 0.95rem; line-height: 1.5; color: #cbd5e1; }
 
-        /* Quiz Layout */
+        /* Interactive Quiz Blocks */
         .quiz-box {
-            background: #ffffff;
-            border: 1px dashed #cbd5e1;
+            background: #1e293b;
+            border: 1px dashed var(--border);
             padding: 20px;
             border-radius: 8px;
         }
-        .quiz-nav { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; }
-        .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: #1e293b; }
+        .quiz-nav { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; color: var(--text-muted); }
+        .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: var(--text-dark); }
         .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .option-label {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f8fafc;
+            background: #0f172a;
             border: 1px solid var(--border);
             padding: 12px;
             border-radius: 6px;
             cursor: pointer;
             transition: background 0.2s;
+            color: #cbd5e1;
         }
-        .option-label:hover { background: #f1f5f9; }
+        .option-label:hover { background: #334155; color: white; }
         
-        /* Utility Buttons */
+        /* Interactive Form Utility Actions */
         .action-btn {
             background-color: var(--primary);
             color: white;
@@ -125,42 +130,39 @@
             font-weight: 500;
         }
         .action-btn:hover { background-color: var(--primary-hover); }
-        .score-text { font-weight: bold; color: #16a34a; margin-top: 10px; display: none; }
     </style>
 </head>
 <body>
 
+    <!-- Dynamic Layout Sidebar -->
     <nav>
-        <h2>📊 Study Suite</h2>
-        <button class="nav-btn active" onclick="switchPage('geometry')">📐 Geometry</button>
-        <button class="nav-btn" onclick="switchPage('algebra')">🧮 Algebra 2</button>
-        <button class="nav-btn" onclick="switchPage('aphg')">🌍 AP Human Geo</button>
-        <button class="nav-btn" onclick="switchPage('biology')">🧬 Biology</button>
+        <h2>Study Website</h2>
+        <button class="nav-btn active" id="btn-geometry" onclick="switchPage('geometry')">📐 Geometry</button>
+        <button class="nav-btn" id="btn-algebra" onclick="switchPage('algebra')">🧮 Algebra 2</button>
+        <button class="nav-btn" id="btn-aphg" onclick="switchPage('aphg')">🌍 AP Human Geo</button>
+        <button class="nav-btn" id="btn-biology" onclick="switchPage('biology')">🧬 Biology</button>
     </nav>
 
+    <!-- Main Subject Panels Container -->
     <main>
-        <!-- ================= GEOMETRY ================= -->
         <div id="geometry" class="page active">
             <h1>Geometry Portal</h1>
             <p class="subtitle">Complete Study Guides & 54 Quiz Questions across 6 Units.</p>
             <div id="geo-units"></div>
         </div>
 
-        <!-- ================= ALGEBRA 2 ================= -->
         <div id="algebra" class="page">
             <h1>Algebra 2 Portal</h1>
             <p class="subtitle">Complete Study Guides & 54 Quiz Questions across 6 Units.</p>
             <div id="alg-units"></div>
         </div>
 
-        <!-- ================= AP HUMAN GEOGRAPHY ================= -->
         <div id="aphg" class="page">
             <h1>AP Human Geography Portal</h1>
             <p class="subtitle">Complete Study Guides & 56 Quiz Questions across 7 Units.</p>
             <div id="aphg-units"></div>
         </div>
 
-        <!-- ================= BIOLOGY ================= -->
         <div id="biology" class="page">
             <h1>Biology Portal</h1>
             <p class="subtitle">Complete Study Guides & 51 Quiz Questions across 5 Units.</p>
@@ -169,7 +171,7 @@
     </main>
 
     <script>
-        // Database of subjects, study guides, and quiz items
+        // Structural Subject Framework Database
         const database = {
             geometry: {
                 targetId: "geo-units",
@@ -199,5 +201,3 @@
                             { q: "If a triangle has side lengths 5, 5, and 8, it is classified as:", o: ["Scalene", "Isosceles", "Equilateral", "Right"], a: 1 },
                             { q: "The hypotenuse-leg (HL) theorem applies exclusively to which type of triangles?", o: ["Acute", "Obtuse", "Right", "Equilateral"], a: 2 },
                             { q: "An exterior angle of a triangle equals the sum of its two remote interior angles.", o: ["True", "False", "Only for right triangles", "Only for isosceles"], a: 0 },
-                            { q: "If a triangle has angles measuring 60°, 60°, and 60°, it is:", o: ["Equilateral", "Scalene", "Obtuse", "Right"], a: 0 },
-                            { q: "What is the longest side of a right-angled triangle?", o: ["Base", "Altitude", "Hypotenuse", "Leg"], a: 3 },
