@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate High School Study Suite</title>
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar */
+        nav {
+            width: 260px;
+            background-color: #0f172a;
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: fixed;
+            height: 100vh;
+        }
+        nav h2 { font-size: 1.2rem; margin-bottom: 20px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+        .nav-btn {
+            background: transparent;
+            color: #cbd5e1;
+            border: none;
+            text-align: left;
+            padding: 12px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover { background-color: #1e293b; color: white; }
+        .nav-btn.active { background-color: var(--primary); color: white; }
+        
+        /* Main Layout */
+        main { margin-left: 260px; padding: 40px; width: calc(100% - 260px); }
+        .page { display: none; }
+        .page.active { display: block; }
+        h1 { font-size: 2.2rem; margin-bottom: 10px; color: #0f172a; }
+        .subtitle { color: var(--text-muted); margin-bottom: 30px; }
+
+        /* Accordions */
+        .unit-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .unit-header {
+            padding: 18px 20px;
+            background: #ffffff;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .unit-header:hover { background: #f8fafc; }
+        .unit-content { padding: 20px; display: none; background: #fafafa; border-top: 1px solid var(--border); }
+        .unit-card.open .unit-content { display: block; }
+        
+        .study-box {
+            background: #f1f5f9;
+            padding: 15px;
+            border-left: 4px solid var(--primary);
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .study-box h4 { margin-bottom: 8px; color: #334155; }
+        .study-box ul { padding-left: 20px; font-size: 0.95rem; line-height: 1.5; color: #475569; }
+
+        /* Quiz Layout */
+        .quiz-box {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .quiz-nav { display: flex; gap: 10px; margin-bottom: 15px; align-items: center; }
+        .q-text { font-size: 1.1rem; font-weight: 600; margin-bottom: 15px; color: #1e293b; }
+        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .option-label:hover { background: #f1f5f9; }
+        
+        /* Utility Buttons */
+        .action-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .action-btn:hover { background-color: var(--primary-hover); }
+        .score-text { font-weight: bold; color: #16a34a; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>📊 Study Suite</h2>
+        <button class="nav-btn active" onclick="switchPage('geometry')">📐 Geometry</button>
+        <button class="nav-btn" onclick="switchPage('algebra')">🧮 Algebra 2</button>
+        <button class="nav-btn" onclick="switchPage('aphg')">🌍 AP Human Geo</button>
+        <button class="nav-btn" onclick="switchPage('biology')">🧬 Biology</button>
+    </nav>
+
+    <main>
+        <!-- ================= GEOMETRY ================= -->
+        <div id="geometry" class="page active">
+            <h1>Geometry Portal</h1>
+            <p class="subtitle">Complete Study Guides & 54 Quiz Questions across 6 Units.</p>
+            <div id="geo-units"></div>
+        </div>
+
+        <!-- ================= ALGEBRA 2 ================= -->
+        <div id="algebra" class="page">
+            <h1>Algebra 2 Portal</h1>
+            <p class="subtitle">Complete Study Guides & 54 Quiz Questions across 6 Units.</p>
+            <div id="alg-units"></div>
+        </div>
+
+        <!-- ================= AP HUMAN GEOGRAPHY ================= -->
+        <div id="aphg" class="page">
+            <h1>AP Human Geography Portal</h1>
+            <p class="subtitle">Complete Study Guides & 56 Quiz Questions across 7 Units.</p>
+            <div id="aphg-units"></div>
+        </div>
+
+        <!-- ================= BIOLOGY ================= -->
+        <div id="biology" class="page">
+            <h1>Biology Portal</h1>
+            <p class="subtitle">Complete Study Guides & 51 Quiz Questions across 5 Units.</p>
+            <div id="bio-units"></div>
+        </div>
+    </main>
+
+    <script>
+        // Database of subjects, study guides, and quiz items
+        const database = {
+            geometry: {
+                targetId: "geo-units",
+                units: [
+                    {
+                        title: "Unit 1: Lines, Angles, & Logic",
+                        study: ["Transversals: Parallel lines cut by a transversal create equal alternate interior and corresponding angles.", "Logic Rules: Conditional statements are written as If P, then Q. Counterexamples disprove statements."],
+                        questions: [
+                            { q: "If two parallel lines are cut by a transversal, alternate interior angles are...", o: ["Complementary", "Supplementary", "Congruent", "Perpendicular"], a: 2 },
+                            { q: "What is the inverse of the conditional statement 'If it rains, the grass is wet'?", o: ["If the grass is wet, it rains", "If it does not rain, the grass is not wet", "If the grass is not wet, it does not rain", "It rains and the grass is wet"], a: 1 },
+                            { q: "An angle measuring exactly 90 degrees is known as:", o: ["Acute", "Oblique", "Obtuse", "Right"], a: 3 },
+                            { q: "Two angles whose measures add up to 180 degrees are:", o: ["Complementary", "Supplementary", "Vertical", "Adjacent"], a: 1 },
+                            { q: "Vertical angles are always:", o: ["Congruent", "Supplementary", "Adjacent", "Linear pairs"], a: 0 },
+                            { q: "If angle A and angle B form a linear pair, and angle A is 60°, what is angle B?", o: ["30°", "60°", "120°", "180°"], a: 2 },
+                            { q: "Which reasoning uses specific examples to reach a general conclusion?", o: ["Deductive", "Inductive", "Syllogism", "Law of Detachment"], a: 1 },
+                            { q: "Points that lie on the same straight line are called:", o: ["Coplanar", "Collinear", "Intersecting", "Parallel"], a: 1 },
+                            { q: "How many points are needed to uniquely define a single plane?", o: ["1", "2", "3 non-collinear", "4"], a: 2 }
+                        ]
+                    },
+                    {
+                        title: "Unit 2: Triangles & Congruence",
+                        study: ["Congruence Shortcuts: Use SSS, SAS, ASA, AAS, or HL to prove triangles are identical.", "Triangle Sum: The interior angles of any triangle always add up to exactly 180 degrees."],
+                        questions: [
+                            { q: "Which of the following is NOT a valid triangle congruence shortcut?", o: ["SSS", "SAS", "AAA", "AAS"], a: 2 },
+                            { q: "In an isosceles triangle, the angles opposite the congruent sides are:", o: ["Right angles", "Congruent", "Complementary", "Different"], a: 1 },
+                            { q: "The interior angles of a triangle always sum up to:", o: ["90°", "180°", "270°", "360°"], a: 1 },
+                            { q: "If a triangle has side lengths 5, 5, and 8, it is classified as:", o: ["Scalene", "Isosceles", "Equilateral", "Right"], a: 1 },
+                            { q: "The hypotenuse-leg (HL) theorem applies exclusively to which type of triangles?", o: ["Acute", "Obtuse", "Right", "Equilateral"], a: 2 },
+                            { q: "An exterior angle of a triangle equals the sum of its two remote interior angles.", o: ["True", "False", "Only for right triangles", "Only for isosceles"], a: 0 },
+                            { q: "If a triangle has angles measuring 60°, 60°, and 60°, it is:", o: ["Equilateral", "Scalene", "Obtuse", "Right"], a: 0 },
+                            { q: "What is the longest side of a right-angled triangle?", o: ["Base", "Altitude", "Hypotenuse", "Leg"], a: 3 },
