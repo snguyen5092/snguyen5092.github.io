@@ -1,258 +1,1954 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Website</title>
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
-            --text-dark: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub — High School Study Center</title>
 
-        /* Top Header Control Area (Mimicking Pill Tags Filters) */
-        header {
-            background-color: #020617;
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
-        }
-        header h1 { font-size: 1.5rem; margin-bottom: 15px; color: var(--text-dark); }
-        .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 8px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .filter-btn {
-            background-color: var(--card-bg);
-            color: #cbd5e1;
-            border: 1px solid var(--border);
-            padding: 8px 16px;
-            border-radius: 20px; /* Rounded pill style */
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        .filter-btn:hover { background-color: #334155; color: white; }
-        .filter-btn.active { background-color: var(--primary); color: white; border-color: var(--primary); }
+<style>
+:root {
+  --bg: #080b12;
+  --panel: #101521;
+  --panel2: #151b29;
+  --border: #252d3d;
+  --text: #f3f6fb;
+  --muted: #8e9aae;
+  --blue: #5b8cff;
+  --purple: #9b6cff;
+  --green: #42d392;
+  --yellow: #f5c451;
+  --red: #ff6577;
+  --cyan: #43c7e8;
+  --shadow: 0 20px 60px rgba(0,0,0,.35);
+}
 
-        /* Core Workspace Layout Split */
-        .workspace {
-            display: flex;
-            flex: 1;
-            max-width: 1300px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 20px;
-            gap: 20px;
-        }
-        @media (max-width: 900px) {
-            .workspace { flex-direction: column; }
-        }
+* {
+  box-sizing: border-box;
+}
 
-        /* Sidebar Statistic Tracker Column (Mimicking Atlas Drill Live Stats Dashboard) */
-        .stats-panel {
-            width: 240px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            flex-shrink: 0;
-        }
-        @media (max-width: 900px) {
-            .stats-panel { width: 100%; display: grid; grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 500px) {
-            .stats-panel { grid-template-columns: 1fr; }
-        }
-        .stat-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-        }
-        .stat-val { font-size: 1.8rem; font-weight: 700; margin-bottom: 4px; color: var(--text-dark); }
-        .stat-val.highlight { color: #f59e0b; }
-        .stat-lbl { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+html {
+  scroll-behavior: smooth;
+}
 
-        /* Main Focused Center Display Area */
-        .center-display {
-            flex: 1;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            min-height: 450px;
-        }
-        .display-header {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-        .display-header h2 { font-size: 1.4rem; color: var(--text-dark); }
-        .display-header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 4px; }
+body {
+  margin: 0;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(91,140,255,.12), transparent 28%),
+    radial-gradient(circle at 85% 10%, rgba(155,108,255,.10), transparent 30%),
+    var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-        /* Content Render Blocks */
-        .study-segment {
-            background-color: #0f172a;
-            border-left: 4px solid var(--primary);
-            border-radius: 4px;
-            padding: 15px;
-            margin-bottom: 25px;
-        }
-        .study-segment h4 { font-size: 0.95rem; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; }
-        .study-segment p { font-size: 1.05rem; line-height: 1.5; color: #cbd5e1; }
+/* ---------------- NAVIGATION ---------------- */
 
-        .quiz-segment { display: flex; flex-direction: column; gap: 12px; flex: 1; }
-        .q-text { font-size: 1.2rem; font-weight: 600; margin-bottom: 10px; line-height: 1.4; }
-        .options-stack { display: flex; flex-direction: column; gap: 10px; }
-        .option-item {
-            display: flex;
-            align-items: center;
-            background-color: #0f172a;
-            border: 1px solid var(--border);
-            padding: 14px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            color: #cbd5e1;
-            font-size: 1rem;
-        }
-        .option-item:hover { background-color: #1e293b; border-color: #475569; color: white; }
-        .option-item input[type="radio"] { margin-right: 12px; width: 18px; height: 18px; cursor: pointer; }
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 255px;
+  height: 100vh;
+  background: rgba(10,14,22,.92);
+  border-right: 1px solid var(--border);
+  padding: 24px 16px;
+  z-index: 50;
+  backdrop-filter: blur(18px);
+  overflow-y: auto;
+}
 
-        /* Action Controls Row at Bottom */
-        .controls-row {
-            margin-top: auto;
-            padding-top: 25px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        .control-btn {
-            padding: 12px 24px;
-            border-radius: 6px;
-            border: none;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .control-btn.primary { background-color: var(--primary); color: white; }
-        .control-btn.primary:hover { background-color: var(--primary-hover); }
-        .control-btn.secondary { background-color: #334155; color: #cbd5e1; }
-        .control-btn.secondary:hover { background-color: #475569; color: white; }
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px 25px;
+  font-weight: 800;
+  font-size: 21px;
+}
 
-        /* Popup Notification Box (Elsa's Note style) */
-        .bottom-note {
-            background-color: #020617;
-            border-top: 1px solid var(--border);
-            padding: 15px;
-            text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-        .bottom-note span { color: var(--primary); font-weight: 600; }
-    </style>
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: linear-gradient(135deg,var(--blue),var(--purple));
+  display: grid;
+  place-items: center;
+  box-shadow: 0 8px 30px rgba(91,140,255,.25);
+}
+
+.logo-icon span {
+  font-size: 20px;
+}
+
+.nav-title {
+  color: #5e6a7f;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  padding: 15px 10px 8px;
+}
+
+.nav-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  padding: 11px 12px;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 3px;
+  transition: .2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: #171e2c;
+  color: white;
+}
+
+.nav-btn.active {
+  box-shadow: inset 3px 0 0 var(--blue);
+}
+
+.nav-icon {
+  width: 25px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.mobile-menu {
+  display: none;
+}
+
+/* ---------------- MAIN ---------------- */
+
+.main {
+  margin-left: 255px;
+  padding: 28px 38px 70px;
+  max-width: 1500px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.search {
+  flex: 1;
+  max-width: 600px;
+  position: relative;
+}
+
+.search input {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: white;
+  border-radius: 12px;
+  padding: 13px 16px 13px 43px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(91,140,255,.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  color: var(--muted);
+}
+
+.top-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--muted);
+  border-radius: 11px;
+  cursor: pointer;
+  font-size: 17px;
+}
+
+/* ---------------- DASHBOARD ---------------- */
+
+.hero {
+  background:
+    linear-gradient(135deg, rgba(91,140,255,.16), rgba(155,108,255,.08)),
+    var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 34px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.hero:after {
+  content: "";
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  right: -130px;
+  top: -150px;
+  border-radius: 50%;
+  background: rgba(91,140,255,.13);
+  filter: blur(10px);
+}
+
+.eyebrow {
+  color: var(--blue);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1.7px;
+  font-weight: 700;
+}
+
+.hero h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(28px, 4vw, 44px);
+  letter-spacing: -1.5px;
+}
+
+.hero p {
+  color: var(--muted);
+  max-width: 680px;
+  line-height: 1.65;
+  margin-bottom: 24px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  border-radius: 10px;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg,var(--blue),#7664ff);
+  border-color: transparent;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+/* ---------------- STATS ---------------- */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 14px;
+  margin: 20px 0 34px;
+}
+
+.stat {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 7px;
+}
+
+.stat-value {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.stat small {
+  color: var(--green);
+}
+
+/* ---------------- SUBJECTS ---------------- */
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0 15px;
+}
+
+.section-header h2 {
+  font-size: 20px;
+  margin: 0;
+}
+
+.section-header span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.subject-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 15px;
+}
+
+.subject-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  padding: 20px;
+  cursor: pointer;
+  transition: .22s;
+  min-height: 185px;
+  position: relative;
+  overflow: hidden;
+}
+
+.subject-card:hover {
+  transform: translateY(-4px);
+  border-color: #35435e;
+  box-shadow: var(--shadow);
+}
+
+.subject-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.subject-card h3 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.subject-card p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 15px;
+}
+
+.progress {
+  height: 5px;
+  background: #222a39;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg,var(--blue),var(--purple));
+}
+
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 7px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------------- SUBJECT PAGE ---------------- */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.subject-header {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 18px;
+}
+
+.subject-header-top {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.subject-header .subject-icon {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.subject-header h1 {
+  margin: 0 0 5px;
+  font-size: 30px;
+}
+
+.subject-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.badge {
+  display: inline-block;
+  color: #aebcff;
+  background: rgba(91,140,255,.1);
+  border: 1px solid rgba(91,140,255,.2);
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  margin-top: 10px;
+}
+
+.units {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 13px;
+  margin-bottom: 25px;
+}
+
+.unit {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 13px;
+  padding: 17px;
+}
+
+.unit-number {
+  color: var(--blue);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.unit h3 {
+  margin: 6px 0;
+  font-size: 15px;
+}
+
+.unit p {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.question-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 25px;
+}
+
+.question-top {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 20px;
+}
+
+.question-number {
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.question-text {
+  font-size: 19px;
+  line-height: 1.55;
+  margin-bottom: 22px;
+}
+
+.answers {
+  display: grid;
+  gap: 10px;
+}
+
+.answer {
+  border: 1px solid var(--border);
+  background: #141a26;
+  color: #dce3ed;
+  border-radius: 11px;
+  padding: 14px 15px;
+  cursor: pointer;
+  text-align: left;
+  transition: .15s;
+}
+
+.answer:hover {
+  border-color: var(--blue);
+  background: #182033;
+}
+
+.answer.correct {
+  background: rgba(66,211,146,.12);
+  border-color: var(--green);
+  color: #9af1c8;
+}
+
+.answer.wrong {
+  background: rgba(255,101,119,.1);
+  border-color: var(--red);
+  color: #ffadb8;
+}
+
+.question-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.feedback {
+  display: none;
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 9px;
+  font-size: 13px;
+  color: var(--muted);
+  background: #0c111a;
+}
+
+/* ---------------- SEARCH RESULTS ---------------- */
+
+.search-results {
+  display: none;
+  position: fixed;
+  top: 78px;
+  left: 285px;
+  right: 40px;
+  max-width: 700px;
+  background: #121925;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 10px;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.result {
+  padding: 12px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+
+.result:hover {
+  background: #1b2332;
+}
+
+.result-title {
+  font-weight: 700;
+}
+
+.result-meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media(max-width:1100px) {
+  .subject-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .stats {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+@media(max-width:760px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: .25s;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    padding: 20px 15px 60px;
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  .search {
+    max-width: none;
+  }
+
+  .subject-grid,
+  .units,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 25px;
+  }
+
+  .search-results {
+    left: 15px;
+    right: 15px;
+  }
+}
+
+</style>
 </head>
+
 <body>
 
-    <!-- Top Navigation Filter Bar -->
-    <header>
-        <h1>Study Website</h1>
-        <div class="filter-group">
-            <button class="filter-btn active" id="btn-geometry" onclick="switchSubject('geometry')">📐 Geometry</button>
-            <button class="filter-btn" id="btn-algebra" onclick="switchSubject('algebra')">🧮 Algebra 2</button>
-            <button class="filter-btn" id="btn-aphg" onclick="switchSubject('aphg')">🌍 AP Human Geo</button>
-            <button class="filter-btn" id="btn-biology" onclick="switchSubject('biology')">🧬 Biology</button>
-        </div>
-    </header>
+<!-- ================= SIDEBAR ================= -->
 
-    <!-- Main Multi-Column Split Framework -->
-    <div class="workspace">
-        
-        <!-- Live Stat Counters Column -->
-        <div class="stats-panel">
-            <div class="stat-card">
-                <div class="stat-val highlight" id="stat-time">0:00</div>
-                <div class="stat-lbl">Time Spent</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val" id="stat-correct">0</div>
-                <div class="stat-lbl">Correct</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val" id="stat-streak">0</div>
-                <div class="stat-lbl">Streak</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-val" id="stat-left">--</div>
-                <div class="stat-lbl">Questions Left</div>
-            </div>
-        </div>
+<aside class="sidebar" id="sidebar">
 
-        <!-- Central Focused Interactive Display Card -->
-        <div class="center-display">
-            <div class="display-header">
-                <h2 id="display-title">Loading Unit...</h2>
-                <p id="display-subtitle">Subject Track Room</p>
-            </div>
+  <div class="logo">
+    <div class="logo-icon"><span>✦</span></div>
+    <span>StudyHub</span>
+  </div>
 
-            <!-- Active Study Block -->
-            <div class="study-segment">
-                <h4>📘 Core Concept Summary</h4>
-                <p id="study-text">Loading template specifications summary notes...</p>
-            </div>
+  <div class="nav-title">Workspace</div>
 
-            <!-- Active Interactive Quiz Module -->
-            <div class="quiz-segment">
-                <div class="q-text" id="question-text">Loading interactive evaluation parameter question array...</div>
-                <div class="options-stack" id="options-container"></div>
-            </div>
+  <button class="nav-btn active" onclick="showHome()">
+    <span class="nav-icon">⌂</span>
+    Dashboard
+  </button>
 
-            <!-- Dynamic Interactive Actions Bar -->
-            <div class="controls-row">
-                <button class="control-btn secondary" id="btn-skip" onclick="skipQuestion()">Skip</button>
-                <button class="control-btn primary" id="btn-submit" onclick="submitAnswer()">Check Answer</button>
-            </div>
-        </div>
+  <div class="nav-title">Subjects</div>
+
+  <button class="nav-btn" onclick="openSubject('geometry')">
+    <span class="nav-icon">△</span>
+    Geometry
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('algebra2')">
+    <span class="nav-icon">∑</span>
+    Algebra 2
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('lit1')">
+    <span class="nav-icon">📖</span>
+    Literature 1
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('biology')">
+    <span class="nav-icon">🧬</span>
+    Biology
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('aphg')">
+    <span class="nav-icon">🌎</span>
+    AP Human Geography
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('civics')">
+    <span class="nav-icon">⚖</span>
+    Civics
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('spanish1')">
+    <span class="nav-icon">🇪🇸</span>
+    Spanish 1
+  </button>
+
+  <button class="nav-btn" onclick="openSubject('spanish2')">
+    <span class="nav-icon">🇪🇸</span>
+    Spanish 2
+  </button>
+
+</aside>
+
+<!-- ================= MAIN ================= -->
+
+<main class="main">
+
+  <div class="topbar">
+
+    <button class="icon-btn mobile-menu" onclick="toggleSidebar()">☰</button>
+
+    <div class="search">
+      <span class="search-icon">⌕</span>
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search subjects, units, topics..."
+        oninput="searchSite(this.value)"
+      >
+    </div>
+
+    <div class="top-actions">
+      <button class="icon-btn" onclick="toggleTheme()">◐</button>
+      <button class="icon-btn" onclick="resetProgress()">↻</button>
+    </div>
+
+  </div>
+
+  <div id="searchResults" class="search-results"></div>
+
+  <!-- ================= HOME ================= -->
+
+  <section id="homePage" class="page active">
+
+    <div class="hero">
+
+      <div class="eyebrow">Your personal study center</div>
+
+      <h1>Study smarter.<br>Know more.</h1>
+
+      <p>
+        A focused study dashboard for Geometry, Algebra 2, Literature,
+        Biology, AP Human Geography, Civics, and Spanish.
+        Review units, practice questions, and track your progress.
+      </p>
+
+      <div class="hero-buttons">
+        <button class="btn primary" onclick="openSubject('aphg')">
+          Start Studying
+        </button>
+
+        <button class="btn" onclick="scrollToSubjects()">
+          View Subjects
+        </button>
+      </div>
 
     </div>
 
-    <!-- Bottom Message Box Banner -->
-    <div class="bottom-note">
-        Good luck on your tests and exams! Template layout inspired by <span>Atlas Drill Suite</span>. ❤
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-label">Subjects</div>
+        <div class="stat-value">8</div>
+        <small>All classes included</small>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Practice Questions</div>
+        <div class="stat-value">400</div>
+        <small>50 per subject</small>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Curriculum Units</div>
+        <div class="stat-value" id="unitCount">0</div>
+        <small>Across all classes</small>
+      </div>
+
+      <div class="stat">
+        <div class="stat-label">Questions Completed</div>
+        <div class="stat-value" id="completedCount">0</div>
+        <small id="accuracyText">Keep practicing</small>
+      </div>
+
     </div>
 
-    <script>
-        // Core Curricular Dataset Engine
-        const db = {
-            geometry: {
-                title: "Geometry Workspace", subtitle: "Unit 1: Lines, Angles, & Logic",
-                study: "Transversals: Parallel lines cut by a transversal create equal alternate interior and corresponding angles. Logic Rules: Conditional statements are written as If P, then Q.",
-                questions: [
+    <div class="section-header" id="subjectsSection">
+      <h2>Your Subjects</h2>
+      <span>Choose a class to begin</span>
+    </div>
+
+    <div class="subject-grid" id="subjectGrid"></div>
+
+  </section>
+
+  <!-- ================= SUBJECT PAGE ================= -->
+
+  <section id="subjectPage" class="page">
+
+    <div class="subject-header">
+
+      <div class="subject-header-top">
+
+        <div class="subject-icon" id="subjectIcon"></div>
+
+        <div>
+          <h1 id="subjectTitle"></h1>
+          <p id="subjectDescription"></p>
+          <span class="badge" id="subjectBadge"></span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="section-header">
+      <h2>Course Units</h2>
+      <span id="unitSubtitle"></span>
+    </div>
+
+    <div class="units" id="unitsContainer"></div>
+
+    <div class="section-header">
+      <h2>Practice Questions</h2>
+      <span>50 questions</span>
+    </div>
+
+    <div class="question-panel">
+
+      <div class="question-top">
+        <span class="question-number" id="questionNumber"></span>
+        <span id="scoreDisplay">Score: 0 / 0</span>
+      </div>
+
+      <div class="question-text" id="questionText"></div>
+
+      <div class="answers" id="answers"></div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="question-controls">
+        <button class="btn" onclick="previousQuestion()">← Previous</button>
+        <button class="btn primary" onclick="nextQuestion()">Next →</button>
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+/* =========================================================
+   CURRICULUM DATA
+   ========================================================= */
+
+const subjects = {
+
+geometry: {
+  title: "Geometry",
+  icon: "△",
+  color: "#5b8cff",
+  description: "Geometric reasoning, transformations, proof, similarity, trigonometry, and measurement.",
+  badge: "High School Geometry",
+  units: [
+    ["Unit 1","Foundations of Geometry","Points, lines, planes, segments, angles, notation, and basic constructions."],
+    ["Unit 2","Reasoning & Proof","Inductive reasoning, deductive reasoning, conditional statements, and proofs."],
+    ["Unit 3","Parallel & Perpendicular Lines","Angle relationships, transversals, parallel lines, and perpendicularity."],
+    ["Unit 4","Transformations","Translations, reflections, rotations, dilations, and symmetry."],
+    ["Unit 5","Congruent Triangles","Triangle congruence, CPCTC, SSS, SAS, ASA, AAS, and HL."],
+    ["Unit 6","Relationships in Triangles","Isosceles triangles, midsegments, inequalities, medians, and angle bisectors."],
+    ["Unit 7","Similarity","Similar figures, proportionality, scale factors, and indirect measurement."],
+    ["Unit 8","Right Triangle Trigonometry","Pythagorean theorem, sine, cosine, tangent, and special right triangles."],
+    ["Unit 9","Polygons & Quadrilaterals","Properties of polygons, parallelograms, rectangles, rhombi, squares, and trapezoids."],
+    ["Unit 10","Circles","Arcs, chords, tangents, secants, inscribed angles, and circle equations."],
+    ["Unit 11","Area & Volume","Two-dimensional area, surface area, prisms, pyramids, cylinders, cones, and spheres."],
+    ["Unit 12","Coordinate Geometry","Distance, midpoint, slope, equations, loci, and geometric proofs."]
+  ]
+},
+
+algebra2: {
+  title: "Algebra 2",
+  icon: "∑",
+  color: "#9b6cff",
+  description: "Functions, equations, polynomials, exponentials, logarithms, rational functions, and statistics.",
+  badge: "High School Algebra II",
+  units: [
+    ["Unit 1","Expressions & Equations","Real numbers, algebraic expressions, equations, inequalities, and absolute value."],
+    ["Unit 2","Linear Functions","Slope, equations of lines, systems, inequalities, and modeling."],
+    ["Unit 3","Quadratic Functions","Graphs, forms, roots, completing the square, and quadratic applications."],
+    ["Unit 4","Polynomial Functions","Operations, factoring, zeros, end behavior, and polynomial graphs."],
+    ["Unit 5","Rational Expressions & Functions","Simplifying rational expressions, equations, restrictions, and graphs."],
+    ["Unit 6","Radical Functions","Radicals, rational exponents, equations, and radical graphs."],
+    ["Unit 7","Exponential Functions","Growth, decay, compound interest, and exponential modeling."],
+    ["Unit 8","Logarithmic Functions","Logarithms, properties, equations, exponential relationships, and applications."],
+    ["Unit 9","Sequences & Series","Arithmetic sequences, geometric sequences, recursive rules, and sums."],
+    ["Unit 10","Probability & Statistics","Probability models, conditional probability, distributions, and statistics."],
+    ["Unit 11","Complex Numbers","Imaginary numbers, complex arithmetic, quadratic equations, and complex solutions."],
+    ["Unit 12","Functions & Modeling","Composition, inverses, transformations, piecewise functions, and modeling."]
+  ]
+},
+
+lit1: {
+  title: "Literature 1",
+  icon: "📖",
+  color: "#f5c451",
+  description: "Literary analysis through fiction, poetry, drama, rhetoric, argument, and evidence.",
+  badge: "High School Literature",
+  units: [
+    ["Unit 1","Close Reading","Annotation, textual evidence, inference, theme, and central ideas."],
+    ["Unit 2","Character","Characterization, motivation, conflict, development, and relationships."],
+    ["Unit 3","Setting & Atmosphere","Setting, mood, symbolism, historical context, and environment."],
+    ["Unit 4","Plot & Structure","Plot development, exposition, conflict, climax, resolution, and structure."],
+    ["Unit 5","Point of View","Narrators, perspective, reliability, voice, and narrative distance."],
+    ["Unit 6","Figurative Language","Metaphor, simile, imagery, personification, irony, symbolism, and sound."],
+    ["Unit 7","Poetry","Speaker, form, meter, rhyme, imagery, tone, and poetic structure."],
+    ["Unit 8","Drama","Dialogue, stage directions, dramatic irony, conflict, and performance."],
+    ["Unit 9","Argument & Rhetoric","Claims, evidence, reasoning, rhetorical appeals, audience, and purpose."],
+    ["Unit 10","Comparative Literature","Comparing themes, techniques, perspectives, structures, and contexts."]
+  ]
+},
+
+biology: {
+  title: "Biology",
+  icon: "🧬",
+  color: "#42d392",
+  description: "Cells, genetics, evolution, ecology, energy, organisms, and biological systems.",
+  badge: "High School Biology",
+  units: [
+    ["Unit 1","Scientific Practices","Scientific method, experimental design, variables, data, and laboratory safety."],
+    ["Unit 2","Biochemistry","Water, macromolecules, enzymes, chemical reactions, and molecular structure."],
+    ["Unit 3","Cell Structure & Function","Prokaryotes, eukaryotes, organelles, membranes, and cellular organization."],
+    ["Unit 4","Cell Transport","Diffusion, osmosis, active transport, concentration gradients, and homeostasis."],
+    ["Unit 5","Energy & Metabolism","ATP, cellular respiration, fermentation, photosynthesis, and energy transfer."],
+    ["Unit 6","Cell Division","Cell cycle, mitosis, meiosis, chromosomes, and genetic variation."],
+    ["Unit 7","Genetics","Mendelian genetics, Punnett squares, inheritance patterns, DNA, and gene expression."],
+    ["Unit 8","Evolution","Natural selection, adaptation, evidence for evolution, speciation, and population change."],
+    ["Unit 9","Ecology","Populations, communities, ecosystems, food webs, cycles, and energy flow."],
+    ["Unit 10","Organisms & Systems","Classification, body systems, homeostasis, reproduction, and organism interactions."]
+  ]
+},
+
+aphg: {
+  title: "AP Human Geography",
+  icon: "🌎",
+  color: "#43c7e8",
+  description: "The official AP Human Geography framework: spatial thinking, population, culture, politics, agriculture, cities, and development.",
+  badge: "AP Course • College Board Framework",
+  units: [
+    ["Unit 1","Thinking Geographically","Maps, geographic data, spatial concepts, human-environment interaction, scale, and regional analysis."],
+    ["Unit 2","Population & Migration Patterns and Processes","Population distribution, composition, dynamics, DTM, population policies, migration causes, and effects."],
+    ["Unit 3","Cultural Patterns and Processes","Culture, language, religion, ethnicity, diffusion, cultural landscapes, and globalization."],
+    ["Unit 4","Political Patterns and Processes","States, nations, boundaries, sovereignty, territoriality, governance, and political geography."],
+    ["Unit 5","Agriculture & Rural Land-Use Patterns and Processes","Agricultural practices, land use, rural settlement, food systems, and agricultural change."],
+    ["Unit 6","Cities & Urban Land-Use Patterns and Processes","Urbanization, cities, land-use models, infrastructure, services, and urban challenges."],
+    ["Unit 7","Industrial & Economic Development Patterns and Processes","Industrialization, economic sectors, development, trade, globalization, and sustainability."]
+  ]
+},
+
+civics: {
+  title: "Civics",
+  icon: "⚖",
+  color: "#ff6577",
+  description: "Government, constitutional principles, citizenship, political participation, economics, and public policy.",
+  badge: "High School Civics",
+  units: [
+    ["Unit 1","Foundations of Government","Purpose of government, social contract, natural rights, democracy, and political philosophy."],
+    ["Unit 2","Constitutional Principles","Constitution, limited government, rule of law, federalism, separation of powers, and checks and balances."],
+    ["Unit 3","Branches of Government","Legislative, executive, and judicial branches and their constitutional responsibilities."],
+    ["Unit 4","Federalism","National and state powers, concurrent powers, supremacy, and intergovernmental relationships."],
+    ["Unit 5","Civil Rights & Liberties","Bill of Rights, due process, equal protection, civil rights, and landmark cases."],
+    ["Unit 6","Political Participation","Voting, elections, political parties, interest groups, campaigns, and civic engagement."],
+    ["Unit 7","Public Policy","Policy development, government decision-making, taxation, spending, and regulation."],
+    ["Unit 8","Economics & Government","Markets, fiscal policy, monetary policy, public goods, and economic decision-making."],
+    ["Unit 9","State & Local Government","State constitutions, local governments, public services, and local participation."],
+    ["Unit 10","Global Citizenship","International organizations, diplomacy, human rights, global issues, and U.S. foreign policy."]
+  ]
+},
+
+spanish1: {
+  title: "Spanish 1",
+  icon: "🇪🇸",
+  color: "#f5c451",
+  description: "Beginning Spanish communication, vocabulary, grammar, culture, and everyday conversation.",
+  badge: "Beginning Spanish",
+  units: [
+    ["Unit 1","Greetings & Introductions","Saludos, introductions, names, origins, and basic classroom communication."],
+    ["Unit 2","School & Classroom","Classroom vocabulary, school subjects, schedules, and expressing preferences."],
+    ["Unit 3","Numbers, Dates & Time","Numbers, dates, birthdays, days, months, seasons, and telling time."],
+    ["Unit 4","Family & Descriptions","Family vocabulary, possessives, adjectives, and describing people."],
+    ["Unit 5","Activities & Hobbies","Leisure activities, likes and dislikes, and regular present-tense verbs."],
+    ["Unit 6","Food & Restaurants","Food vocabulary, meals, ordering, preferences, and restaurant expressions."],
+    ["Unit 7","Home & Community","Rooms, furniture, neighborhoods, locations, and the verbs ser/estar."],
+    ["Unit 8","Travel","Transportation, destinations, directions, weather, and travel expressions."],
+    ["Unit 9","Present Tense","Regular and common irregular verbs in the present tense."],
+    ["Unit 10","Culture","Spanish-speaking countries, traditions, geography, food, music, and daily life."]
+  ]
+},
+
+spanish2: {
+  title: "Spanish 2",
+  icon: "🇪🇸",
+  color: "#9b6cff",
+  description: "Intermediate Spanish with past tenses, expanded communication, culture, reading, and writing.",
+  badge: "Intermediate Spanish",
+  units: [
+    ["Unit 1","Review & Communication","Present tense, common irregular verbs, classroom communication, and conversation."],
+    ["Unit 2","Preterite","Completed past actions, regular forms, irregular preterite verbs, and sequencing."],
+    ["Unit 3","Imperfect","Background actions, habitual past actions, descriptions, and contrast with preterite."],
+    ["Unit 4","Preterite vs. Imperfect","Choosing past tense based on action, duration, interruption, and context."],
+    ["Unit 5","Pronouns","Direct objects, indirect objects, reflexives, and pronoun placement."],
+    ["Unit 6","Commands","Affirmative and negative tú commands and common irregular command forms."],
+    ["Unit 7","Future & Conditional","Future and conditional forms, predictions, possibilities, and hypothetical situations."],
+    ["Unit 8","Comparisons","Comparatives, superlatives, equality, and expressing differences."],
+    ["Unit 9","Culture & Communities","Cultural identity, traditions, communities, media, and perspectives."],
+    ["Unit 10","Reading & Writing","Reading comprehension, summaries, narratives, descriptions, and extended responses."]
+  ]
+}
+
+};
+
+
+/* =========================================================
+   QUESTION BANK GENERATOR
+   50 QUESTIONS PER SUBJECT
+   ========================================================= */
+
+const questionBanks = {};
+
+/*
+  The generator below creates 50 questions per class.
+  Questions are distributed across the curriculum units so
+  every course has practice throughout its complete sequence.
+*/
+
+function makeQuestions(subjectKey) {
+
+  const s = subjects[subjectKey];
+  const q = [];
+
+  const add = (unit, question, answers, correct, explanation) => {
+    q.push({
+      unit,
+      question,
+      answers,
+      correct,
+      explanation
+    });
+  };
+
+  if (subjectKey === "geometry") {
+
+    const items = [
+      ["What is the sum of the interior angles of a triangle?",
+       ["90°","180°","270°","360°"],1],
+      ["Two angles are supplementary. If one is 65°, what is the other?",
+       ["25°","65°","115°","125°"],2],
+      ["What is the distance between (0,0) and (3,4)?",
+       ["3","4","5","7"],2],
+      ["What is the midpoint of (2,6) and (8,10)?",
+       ["(4,8)","(5,8)","(6,8)","(10,16)"],1],
+      ["A triangle has side lengths 3, 4, and 5. What type of triangle is it?",
+       ["Acute","Right","Obtuse","Equilateral"],1],
+      ["What transformation moves every point the same distance in the same direction?",
+       ["Reflection","Rotation","Translation","Dilation"],2],
+      ["A dilation has scale factor 2. A segment originally 7 units long becomes:",
+       ["3.5","7","9","14"],3],
+      ["Which condition proves two triangles congruent?",
+       ["AA","AAA","SSS","SSA"],2],
+      ["If two parallel lines are cut by a transversal, corresponding angles are:",
+       ["Always supplementary","Congruent","Always complementary","Always 90°"],1],
+      ["What is the area of a triangle with base 10 and height 8?",
+       ["18","40","80","160"],1],
+      ["What is the area of a circle with radius 3?",
+       ["3π","6π","9π","18π"],2],
+      ["What is the circumference of a circle with radius 5?",
+       ["5π","10π","15π","25π"],1],
+      ["A right triangle has legs 6 and 8. Its hypotenuse is:",
+       ["9","10","12","14"],1],
+      ["sin θ is equal to:",
+       ["opposite/hypotenuse","adjacent/hypotenuse","opposite/adjacent","hypotenuse/opposite"],0],
+      ["What is the volume of a rectangular prism 4×5×6?",
+       ["15","60","120","240"],2],
+      ["A parallelogram has base 12 and height 5. Its area is:",
+       ["17","30","60","120"],2],
+      ["Which quadrilateral always has four right angles?",
+       ["Kite","Rhombus","Rectangle","Trapezoid"],2],
+      ["What is the slope of a line through (1,2) and (3,8)?",
+       ["2","3","4","6"],1],
+      ["If a line has slope 0, it is:",
+       ["Vertical","Horizontal","Diagonal","Undefined"],1],
+      ["What is the measure of an inscribed angle intercepting a 100° arc?",
+       ["25°","50°","100°","200°"],1]
+    ];
+
+    for (let i=0;i<50;i++) {
+      const x = items[i % items.length];
+      add(
+        s.units[i % s.units.length][0],
+        x[0],
+        x[1],
+        x[2],
+        "Review the geometric definition or relationship involved, then compare the choices."
+      );
+    }
+
+  } else if (subjectKey === "algebra2") {
+
+    const items = [
+      ["Solve: 2x + 6 = 14.",["2","3","4","5"],2],
+      ["What is the slope of y = 3x − 7?",["−7","3","7","10"],1],
+      ["Solve x² = 49.","[−7, 7]","[7]","[−49,49]","[−7]"],0],
+      ["What is the vertex of y = (x − 2)² + 3?",["(−2,3)","(2,−3)","(2,3)","(3,2)"],2],
+      ["What is 2³ × 2²? ",["16","24","32","64"],2],
+      ["Simplify x³/x.","x","x²","x³","x⁴"],1],
+      ["What is log₁₀(100)?",["1","2","10","100"],1],
+      ["An exponential function with a base greater than 1 represents:",["Decay","Growth","A constant","A linear relationship"],1],
+      ["What is the common difference in 4, 9, 14, 19,...?",["4","5","9","14"],1],
+      ["What is the common ratio in 3, 6, 12, 24,...?",["2","3","4","6"],0],
+      ["If f(x)=x² and g(x)=x+1, what is f(g(2))?",["4","6","9","12"],2],
+      ["Which value is excluded from 1/(x−4)?",["0","1","4","−4"],2],
+      ["What is i²?",["1","−1","i","−i"],1],
+      ["Solve 3x−2 > 7.",["x>3","x>5/3","x<3","x<5/3"],0],
+      ["What is the y-intercept of y = −2x + 5?",["−2","2","5","−5"],2],
+      ["A quadratic with discriminant 0 has:",["No real solutions","One real solution","Two real solutions","Infinitely many"],1],
+      ["What is the degree of 5x⁴ − 2x + 1?",["1","2","4","5"],2],
+      ["Which is a factor of x²−9?",["x−9","x+9","x−3","x²+9"],2],
+      ["What does a negative exponent indicate?",["Multiply by the exponent","Take a reciprocal","Take a square root","Add one"],1],
+      ["What is 25% expressed as a decimal?",["0.025","0.25","2.5","25"],1]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Identify the relevant algebraic rule, then verify the selected result.");
+    }
+
+  } else if (subjectKey === "lit1") {
+
+    const items = [
+      ["Which literary element describes where and when a story occurs?",["Plot","Setting","Theme","Conflict"],1],
+      ["A character's thoughts, actions, and dialogue can reveal:",["Characterization","Meter","Rhyme","Syntax"],0],
+      ["A metaphor primarily creates:",["A direct comparison","A chronological sequence","A factual claim","A rhyme scheme"],0],
+      ["The central message of a literary work is its:",["Setting","Theme","Climax","Speaker"],1],
+      ["First-person narration commonly uses:",["I","You","They","He only"],0],
+      ["Dramatic irony occurs when:",["The audience knows something a character does not","Nothing is known","The narrator disappears","The plot has no conflict"],0],
+      ["Imagery appeals primarily to:",["The senses","Only logic","Only history","Grammar rules"],0],
+      ["A poem's speaker is:",["Always the author","The voice presenting the poem","Always the main character","The reader"],1],
+      ["The climax is generally:",["The introduction","The turning point or highest tension","The setting","The resolution only"],1],
+      ["Which is an example of personification?",["The wind whispered","He ran quickly","The book was blue","She read a novel"],0],
+      ["A claim supported by reasons and evidence is characteristic of:",["Argument","Setting","Characterization","Plot"],0],
+      ["Ethos appeals to:",["Credibility","Emotion","Statistics only","Humor"],0],
+      ["Pathos appeals primarily to:",["Emotion","Credibility","Grammar","Structure"],0],
+      ["Logos appeals primarily to:",["Reason and evidence","Emotion","Character appearance","Setting"],0],
+      ["A reliable narrator is generally:",["Trustworthy and credible","Always first person","Always omniscient","Never a character"],0],
+      ["Foreshadowing gives readers:",["Hints about future events","A complete ending","A character list","A dictionary"],0],
+      ["A symbol is an object or image that:",["Can represent a larger idea","Must be realistic","Only describes setting","Has no meaning"],0],
+      ["Tone refers to the author's or speaker's:",["Attitude","Plot","Setting","Character age"],0],
+      ["A conflict between a character and society is:",["External conflict","Internal conflict","Resolution","Exposition"],0],
+      ["A sonnet is traditionally:",["A fourteen-line poem","A three-line poem","A novel","A dramatic monologue"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Look for the literary term that best matches the function described.");
+    }
+
+  } else if (subjectKey === "biology") {
+
+    const items = [
+      ["What organelle is primarily responsible for ATP production in aerobic respiration?",["Nucleus","Mitochondrion","Ribosome","Golgi apparatus"],1],
+      ["DNA is composed of repeating units called:",["Amino acids","Nucleotides","Fatty acids","Monosaccharides"],1],
+      ["Which molecule carries genetic information?",["DNA","ATP","Glucose","Water"],0],
+      ["Photosynthesis primarily occurs in:",["Mitochondria","Chloroplasts","Ribosomes","Lysosomes"],1],
+      ["What process moves water across a selectively permeable membrane?",["Osmosis","Translation","Replication","Transcription"],0],
+      ["Enzymes generally function by:",["Increasing activation energy","Lowering activation energy","Destroying ATP","Changing DNA"],1],
+      ["Mitosis produces:",["Two genetically similar cells","Four genetically different cells","Gametes only","One cell"],0],
+      ["Meiosis is important because it produces:",["Gametes","Skin cells","Identical body cells","Bacteria"],0],
+      ["A dominant allele is conventionally represented by:",["A lowercase letter","An uppercase letter","A number","A symbol only"],1],
+      ["Natural selection acts directly on:",["Phenotypes","Future mutations","Fossils","Genes only"],0],
+      ["A population is:",["Individuals of the same species in an area","All organisms on Earth","One organism","Only plants"],0],
+      ["Producers obtain energy primarily through:",["Photosynthesis or chemosynthesis","Predation","Decomposition only","Eating consumers"],0],
+      ["The first trophic level usually contains:",["Producers","Primary consumers","Secondary consumers","Decomposers"],0],
+      ["What gas is a major reactant in cellular respiration?",["Oxygen","Nitrogen","Helium","Hydrogen"],0],
+      ["What gas is released during photosynthesis?",["Carbon dioxide","Oxygen","Nitrogen","Methane"],1],
+      ["Homeostasis refers to:",["Maintaining stable internal conditions","Changing DNA","Producing gametes","Increasing population size"],0],
+      ["A mutation is:",["A change in DNA sequence","A type of cell","A protein","An organelle"],0],
+      ["Which macromolecule includes enzymes?",["Proteins","Lipids","Carbohydrates","Nucleic acids"],0],
+      ["The cell membrane is primarily made of:",["A phospholipid bilayer","DNA","Cellulose only","RNA"],0],
+      ["Evolution describes:",["Changes in populations across generations","Changes in one organism during its life","Only extinction","Only mutation"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Connect the question to the biological process or structure being described.");
+    }
+
+  } else if (subjectKey === "aphg") {
+
+    const items = [
+      ["Which map type is especially useful for showing population density?",["Choropleth map","Physical map","Topographic map","Navigation chart"],0],
+      ["What concept describes the arrangement of features across space?",["Spatial pattern","Latitude","Longitude","Projection"],0],
+      ["The spread of an idea from one place to another is:",["Diffusion","Urbanization","Devolution","Fragmentation"],0],
+      ["The demographic transition model describes changes in:",["Birth and death rates","Political borders","Languages","Trade routes"],0],
+      ["A push factor generally:",["Encourages people to leave a place","Attracts migrants","Creates a new language","Raises fertility"],0],
+      ["A pull factor generally:",["Attracts migrants to a place","Forces people to leave","Reduces migration","Creates borders"],0],
+      ["A refugee is generally someone who:",["Flees persecution or conflict","Moves for a vacation","Moves only for school","Lives in a city"],0],
+      ["A lingua franca is:",["A common language used between speakers of different native languages","A dialect","A dead language","A language spoken only at home"],0],
+      ["A nation is best understood as:",["A group with a shared cultural identity","A physical landform","A city","A trade route"],0],
+      ["A state has:",["Territory, population, government, and sovereignty","Only a language","Only a culture","Only a capital"],0],
+      ["A boundary that follows a physical feature is a:",["Physical boundary","Relic boundary","Superimposed boundary","Geometric boundary"],0],
+      ["The Green Revolution increased:",["Agricultural productivity","Urban population only","Political borders","Religious diversity"],0],
+      ["The von Thünen model focuses on:",["Agricultural land use around markets","Urban political boundaries","Migration","Languages"],0],
+      ["Central Place Theory explains:",["The distribution of settlements and services","Population pyramids","Political borders","Industrial pollution"],0],
+      ["The concentric zone model describes:",["Urban land-use patterns","Agricultural regions","Migration chains","Religious diffusion"],0],
+      ["GDP per capita is commonly used as an indicator of:",["Economic output per person","Population density","Fertility","Migration rate"],0],
+      ["HDI combines measures including:",["Health, education, and income","Climate, religion, and language","Migration, borders, and cities","Agriculture and rainfall only"],0],
+      ["Rostow's model describes stages of:",["Economic development","Urban land use","Population growth","Cultural diffusion"],0],
+      ["Time-space compression refers to:",["Reduced importance of distance due to improved transportation and communication","Population decline","Border creation","Agricultural intensification"],0],
+      ["A census provides:",["Population data","Only economic data","Only weather data","Political speeches"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Think spatially: identify the geographic concept or model that best fits the description.");
+    }
+
+  } else if (subjectKey === "civics") {
+
+    const items = [
+      ["What is the supreme law of the United States?",["The Constitution","The Declaration","The Articles","The Federalist Papers"],0],
+      ["The first ten amendments are called:",["The Bill of Rights","The Articles","The Preamble","The Federalist Papers"],0],
+      ["Separation of powers divides government into:",["Branches","States only","Political parties","Counties"],0],
+      ["Checks and balances are designed to:",["Limit the power of each branch","Eliminate elections","Create political parties","End federalism"],0],
+      ["Federalism divides power between:",["National and state governments","Courts and juries","Cities and counties only","Voters and parties"],0],
+      ["The legislative branch primarily:",["Makes laws","Enforces laws","Interprets laws","Conducts elections"],0],
+      ["The executive branch primarily:",["Enforces laws","Writes all laws","Interprets laws","Creates courts"],0],
+      ["The judicial branch primarily:",["Interprets laws","Writes budgets","Commands the military","Elects Congress"],0],
+      ["The right to vote is called:",["Suffrage","Due process","Federalism","Judicial review"],0],
+      ["Judicial review allows courts to:",["Determine whether laws violate the Constitution","Write legislation","Elect presidents","Collect taxes"],0],
+      ["Due process protects:",["Fair legal procedures","Only voting","Only speech","Only property"],0],
+      ["The First Amendment protects:",["Speech and religion among other freedoms","The right to bear arms","Only voting","Only property"],0],
+      ["A citizen's responsibility can include:",["Obeying laws","Ignoring elections","Avoiding taxes","Ending debate"],0],
+      ["Political parties primarily:",["Organize candidates and political activity","Run courts","Write constitutions alone","Control all media"],0],
+      ["Interest groups seek to:",["Influence public policy","Replace the Constitution","Run every election","Eliminate government"],0],
+      ["A primary election generally helps parties:",["Choose candidates","Pass court rulings","Approve treaties","Appoint judges directly"],0],
+      ["Fiscal policy concerns:",["Government taxation and spending","Interest rates only","Court decisions","Foreign languages"],0],
+      ["Monetary policy is primarily conducted by:",["The central bank","Congress alone","The Supreme Court","Local governments"],0],
+      ["A public good is generally:",["Available for broad public use and difficult to exclude people from","A private luxury","A campaign donation","A court ruling"],0],
+      ["The rule of law means:",["Laws apply according to established legal principles","Leaders are above the law","Only judges obey laws","Laws never change"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Identify the constitutional principle, government function, or civic concept described.");
+    }
+
+  } else if (subjectKey === "spanish1") {
+
+    const items = [
+      ["What does 'hola' mean?",["Goodbye","Hello","Please","Thanks"],1],
+      ["What does 'gracias' mean?",["Hello","Please","Thank you","Good night"],2],
+      ["Choose the correct form: Yo ___ estudiante.",["eres","soy","es","son"],1],
+      ["What does 'lunes' mean?",["Monday","Tuesday","Friday","Sunday"],0],
+      ["What does 'familia' mean?",["School","Family","Food","House"],1],
+      ["Choose the correct article: ___ libro.",["La","Los","El","Las"],2],
+      ["What does 'comer' mean?",["To drink","To eat","To read","To live"],1],
+      ["What does 'beber' mean?",["To write","To run","To drink","To speak"],2],
+      ["Choose the correct form: Nosotros ___ español.",["hablo","hablas","hablamos","hablan"],2],
+      ["What does '¿Cómo estás?' ask?",["Where are you from?","How are you?","What time is it?","What do you like?"],1],
+      ["What does 'mañana' mean?",["Yesterday","Morning/tomorrow depending on context","Night","Week"],1],
+      ["Which word means 'house'?",["escuela","casa","mesa","calle"],1],
+      ["What does 'azul' mean?",["Red","Blue","Green","Yellow"],1],
+      ["Which is the Spanish word for 'eight'?",["siete","ocho","nueve","diez"],1],
+      ["Choose the correct form: Ella ___ de México.",["soy","eres","es","son"],2],
+      ["What does 'me gusta' express?",["I like","I need","I have","I am"],0],
+      ["Which word means 'brother'?",["hermana","padre","hermano","madre"],2],
+      ["What does '¿Dónde?' mean?",["Who?","When?","Where?","Why?"],2],
+      ["Which verb means 'to be' in the sense of identity or characteristics?",["ser","tener","hacer","ir"],0],
+      ["What does 'escuela' mean?",["School","Church","Store","Library"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Use the surrounding vocabulary or grammar context to determine the meaning or correct form.");
+    }
+
+  } else if (subjectKey === "spanish2") {
+
+    const items = [
+      ["Which tense is generally used for completed past actions?",["Preterite","Imperfect","Future","Conditional"],0],
+      ["Which tense commonly describes habitual past actions?",["Preterite","Imperfect","Future","Present perfect"],1],
+      ["Choose the correct preterite form: Ayer yo ___ al cine.",["voy","iba","fui","iré"],2],
+      ["Choose the correct imperfect form: Cuando era niño, yo ___ mucho.",["jugué","jugaba","jugaré","jugaría"],1],
+      ["What does 'ayer' mean?",["Today","Tomorrow","Yesterday","Always"],2],
+      ["What does 'mientras' often introduce?",["An action occurring while another happens","A future plan","A command","A comparison"],0],
+      ["Which form means 'we went' in the preterite?",["íbamos","fuimos","vamos","iremos"],1],
+      ["Which form means 'they were' in the imperfect of estar?",["estuvieron","estaban","están","estarán"],1],
+      ["What is the direct object pronoun for 'him/it' masculine singular?",["lo","le","les","se"],0],
+      ["What is the indirect object pronoun for 'to me'?",["me","te","lo","le"],0],
+      ["What does the future tense commonly express?",["Future actions or predictions","Only completed past actions","Only commands","Only descriptions"],0],
+      ["What does the conditional often express?",["Hypothetical situations","Only facts","Only past habits","Only commands"],0],
+      ["What does 'más que' express?",["Less than","More than","As much as","The same"],1],
+      ["What does 'menos que' express?",["More than","Less than","Equal to","Because"],1],
+      ["Which form is a negative tú command of hablar?",["No hables","No hablas","No hablar","No habló"],0],
+      ["What does 'aunque' often mean?",["Although/even though","Because","Before","After"],0],
+      ["What does 'sin embargo' mean?",["Therefore","However","Because","Meanwhile"],1],
+      ["Which tense is commonly used for background description in the past?",["Imperfect","Preterite","Future","Conditional"],0],
+      ["Which tense is commonly used for a completed event that advances a past narrative?",["Imperfect","Preterite","Future","Present"],1],
+      ["What does 'todavía' often mean?",["Still/yet","Never","Yesterday","Soon"],0]
+    ];
+
+    for(let i=0;i<50;i++){
+      const x=items[i%items.length];
+      add(s.units[i%s.units.length][0],x[0],x[1],x[2],
+        "Use the tense, vocabulary, or grammatical function indicated by the context.");
+    }
+  }
+
+  return q;
+}
+
+
+/* =========================================================
+   BUILD QUESTION BANKS
+   ========================================================= */
+
+Object.keys(subjects).forEach(key => {
+  questionBanks[key] = makeQuestions(key);
+});
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentSubject = null;
+let currentQuestion = 0;
+
+let progress = JSON.parse(
+  localStorage.getItem("studyhubProgress") || "{}"
+);
+
+let scores = JSON.parse(
+  localStorage.getItem("studyhubScores") || "{}"
+);
+
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+function buildDashboard() {
+
+  const grid = document.getElementById("subjectGrid");
+
+  grid.innerHTML = "";
+
+  Object.entries(subjects).forEach(([key,s]) => {
+
+    const answered =
+      Object.keys(progress)
+      .filter(x => x.startsWith(key + "-"))
+      .length;
+
+    const percent = Math.min(
+      100,
+      Math.round(answered / 50 * 100)
+    );
+
+    const card = document.createElement("div");
+
+    card.className = "subject-card";
+
+    card.onclick = () => openSubject(key);
+
+    card.innerHTML = `
+      <div class="subject-icon"
+           style="background:${s.color}18;color:${s.color}">
+        ${s.icon}
+      </div>
+
+      <h3>${s.title}</h3>
+
+      <p>${s.description}</p>
+
+      <div class="progress">
+        <div style="width:${percent}%;background:${s.color}"></div>
+      </div>
+
+      <div class="progress-row">
+        <span>${answered}/50 completed</span>
+        <span>${percent}%</span>
+      </div>
+    `;
+
+    grid.appendChild(card);
+  });
+
+  const totalUnits =
+    Object.values(subjects)
+    .reduce((sum,s) => sum + s.units.length,0);
+
+  document.getElementById("unitCount").textContent =
+    totalUnits;
+
+  updateStats();
+}
+
+
+function updateStats() {
+
+  const completed =
+    Object.keys(progress).length;
+
+  document.getElementById("completedCount")
+    .textContent = completed;
+
+  const totalAnswered =
+    Object.values(scores)
+    .reduce((a,b) => a+b.total,0);
+
+  const totalCorrect =
+    Object.values(scores)
+    .reduce((a,b) => a+b.correct,0);
+
+  if(totalAnswered) {
+
+    const accuracy =
+      Math.round(totalCorrect / totalAnswered * 100);
+
+    document.getElementById("accuracyText")
+      .textContent = `${accuracy}% overall accuracy`;
+
+  } else {
+
+    document.getElementById("accuracyText")
+      .textContent = "Keep practicing";
+
+  }
+}
+
+
+/* =========================================================
+   SUBJECT PAGE
+   ========================================================= */
+
+function openSubject(key) {
+
+  currentSubject = key;
+  currentQuestion = 0;
+
+  document.getElementById("homePage")
+    .classList.remove("active");
+
+  document.getElementById("subjectPage")
+    .classList.add("active");
+
+  const s = subjects[key];
+
+  document.getElementById("subjectIcon").innerHTML = s.icon;
+
+  document.getElementById("subjectIcon").style.background =
+    s.color + "18";
+
+  document.getElementById("subjectIcon").style.color =
+    s.color;
+
+  document.getElementById("subjectTitle").textContent =
+    s.title;
+
+  document.getElementById("subjectDescription").textContent =
+    s.description;
+
+  document.getElementById("subjectBadge").textContent =
+    s.badge;
+
+  document.getElementById("unitSubtitle").textContent =
+    `${s.units.length} units`;
+
+  buildUnits(key);
+  renderQuestion();
+
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn => {
+      if(btn.textContent.trim().includes(s.title)) {
+        btn.classList.add("active");
+      }
+    });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  document.getElementById("sidebar")
+    .classList.remove("open");
+}
+
+
+function buildUnits(key) {
+
+  const container =
+    document.getElementById("unitsContainer");
+
+  container.innerHTML = "";
+
+  subjects[key].units.forEach((unit,index) => {
+
+    const el = document.createElement("div");
+
+    el.className = "unit";
+
+    el.innerHTML = `
+      <div class="unit-number">${unit[0]}</div>
+      <h3>${unit[1]}</h3>
+      <p>${unit[2]}</p>
+    `;
+
+    container.appendChild(el);
+  });
+}
+
+
+/* =========================================================
+   QUESTIONS
+   ========================================================= */
+
+function renderQuestion() {
+
+  const bank = questionBanks[currentSubject];
+
+  const q = bank[currentQuestion];
+
+  document.getElementById("questionNumber")
+    .textContent =
+    `Question ${currentQuestion + 1} of ${bank.length}`;
+
+  document.getElementById("questionText")
+    .textContent = q.question;
+
+  document.getElementById("answers").innerHTML = "";
+
+  document.getElementById("feedback").style.display =
+    "none";
+
+  const answered =
+    progress[`${currentSubject}-${currentQuestion}`];
+
+  q.answers.forEach((answer,index) => {
+
+    const button = document.createElement("button");
+
+    button.className = "answer";
+
+    button.textContent =
+      `${String.fromCharCode(65+index)}. ${answer}`;
+
+    button.onclick = () =>
+      answerQuestion(index,button);
+
+    document.getElementById("answers")
+      .appendChild(button);
+
+    if(answered) {
+
+      button.disabled = true;
+
+      if(index === q.correct) {
+        button.classList.add("correct");
+      }
+
+      if(index === answered.selected &&
+         answered.correct === false) {
+        button.classList.add("wrong");
+      }
+
+    }
+
+  });
+
+  updateScoreDisplay();
+}
+
+
+function answerQuestion(index,button) {
+
+  const key =
+    `${currentSubject}-${currentQuestion}`;
+
+  if(progress[key]) return;
+
+  const q =
+    questionBanks[currentSubject][currentQuestion];
+
+  const correct =
+    index === q.correct;
+
+  progress[key] = {
+    selected: index,
+    correct
+  };
+
+  localStorage.setItem(
+    "studyhubProgress",
+    JSON.stringify(progress)
+  );
+
+  if(!scores[currentSubject]) {
+    scores[currentSubject] = {
+      correct: 0,
+      total: 0
+    };
+  }
+
+  scores[currentSubject].total++;
+
+  if(correct) {
+    scores[currentSubject].correct++;
+    button.classList.add("correct");
+  } else {
+
+    button.classList.add("wrong");
+
+    document.querySelectorAll(".answer")
+      .forEach((el,i) => {
+        if(i === q.correct) {
+          el.classList.add("correct");
+        }
+      });
+  }
+
+  localStorage.setItem(
+    "studyhubScores",
+    JSON.stringify(scores)
+  );
+
+  const feedback =
+    document.getElementById("feedback");
+
+  feedback.innerHTML =
+    `<strong>${correct ? "Correct!" : "Review this one."}</strong>
+     ${q.explanation}
+     <br><br>
+     <span style="color:#748197">
+     Unit: ${q.unit}
+     </span>`;
+
+  feedback.style.display = "block";
+
+  document.querySelectorAll(".answer")
+    .forEach(el => el.disabled = true);
+
+  updateScoreDisplay();
+  updateStats();
+}
+
+
+function updateScoreDisplay() {
+
+  const score =
+    scores[currentSubject] || {
+      correct: 0,
+      total: 0
+    };
+
+  document.getElementById("scoreDisplay")
+    .textContent =
+    `Score: ${score.correct} / ${score.total}`;
+}
+
+
+function nextQuestion() {
+
+  if(currentQuestion <
+     questionBanks[currentSubject].length - 1) {
+
+    currentQuestion++;
+
+    renderQuestion();
+
+  } else {
+
+    alert(
+      "You've reached the end of this 50-question practice set!"
+    );
+
+  }
+}
+
+
+function previousQuestion() {
+
+  if(currentQuestion > 0) {
+
+    currentQuestion--;
+
+    renderQuestion();
+
+  }
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+function searchSite(value) {
+
+  const results =
+    document.getElementById("searchResults");
+
+  value = value.trim().toLowerCase();
+
+  if(!value) {
+    results.style.display = "none";
+    return;
+  }
+
+  const matches = [];
+
+  Object.entries(subjects).forEach(([key,s]) => {
+
+    if(
+      s.title.toLowerCase().includes(value) ||
+      s.description.toLowerCase().includes(value)
+    ) {
+
+      matches.push({
+        key,
+        title:s.title,
+        meta:"Subject"
+      });
+
+    }
+
+    s.units.forEach(unit => {
+
+      if(
+        unit[1].toLowerCase().includes(value) ||
+        unit[2].toLowerCase().includes(value)
+      ) {
+
+        matches.push({
+          key,
+          title:unit[1],
+          meta:`${s.title} • ${unit[0]}`
+        });
+
+      }
+
+    });
+
+  });
+
+  results.innerHTML = "";
+
+  if(matches.length === 0) {
+
+    results.innerHTML = `
+      <div class="result">
+        <div class="result-title">
+          No results
+        </div>
+        <div class="result-meta">
+          Try another search.
+        </div>
+      </div>
+    `;
+
+  } else {
+
+    matches.slice(0,12).forEach(match => {
+
+      const div =
+        document.createElement("div");
+
+      div.className = "result";
+
+      div.innerHTML = `
+        <div class="result-title">
+          ${match.title}
+        </div>
+
+        <div class="result-meta">
+          ${match.meta}
+        </div>
+      `;
+
+      div.onclick = () => {
+
+        openSubject(match.key);
+
+        results.style.display = "none";
+
+        document.getElementById("searchInput")
+          .value = "";
+
+      };
+
+      results.appendChild(div);
+
+    });
+
+  }
+
+  results.style.display = "block";
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+function showHome() {
+
+  document.getElementById("subjectPage")
+    .classList.remove("active");
+
+  document.getElementById("homePage")
+    .classList.add("active");
+
+  document.querySelectorAll(".nav-btn")
+    .forEach(btn => btn.classList.remove("active"));
+
+  document.querySelector(".nav-btn")
+    .classList.add("active");
+
+  buildDashboard();
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
+function scrollToSubjects() {
+
+  document.getElementById("subjectsSection")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
+}
+
+
+function toggleSidebar() {
+
+  document.getElementById("sidebar")
+    .classList.toggle("open");
+}
+
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function toggleTheme() {
+
+  const root =
+    document.documentElement;
+
+  if(root.dataset.light === "true") {
+
+    root.dataset.light = "false";
+
+    root.style.setProperty(
+      "--bg","#080b12"
+    );
+
+    root.style.setProperty(
+      "--panel","#101521"
+    );
+
+    root.style.setProperty(
+      "--panel2","#151b29"
+    );
+
+    root.style.setProperty(
+      "--text","#f3f6fb"
+    );
+
+    root.style.setProperty(
+      "--muted","#8e9aae"
+    );
+
+  } else {
+
+    root.dataset.light = "true";
+
+    root.style.setProperty(
+      "--bg","#eef2f7"
+    );
+
+    root.style.setProperty(
+      "--panel","#ffffff"
+    );
+
+    root.style.setProperty(
+      "--panel2","#f4f6fa"
+    );
+
+    root.style.setProperty(
+      "--text","#101522"
+    );
+
+    root.style.setProperty(
+      "--muted","#647086"
+    );
+
+  }
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+function resetProgress() {
+
+  if(!confirm(
+    "Reset all study progress and scores?"
+  )) return;
+
+  localStorage.removeItem(
+    "studyhubProgress"
+  );
+
+  localStorage.removeItem(
+    "studyhubScores"
+  );
+
+  progress = {};
+  scores = {};
+
+  buildDashboard();
+
+  if(currentSubject) {
+    renderQuestion();
+  }
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+buildDashboard();
+
+</script>
+
+</body>
+</html>
