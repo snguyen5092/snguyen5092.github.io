@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub — Class Leaderboard</title>
+<style>
+:root{--bg:#0b1020;--panel:#11182b;--panel2:#18213a;--text:#f5f7ff;--muted:#9ca8c7;--border:#293552;--blue:#6ea8ff;--green:#55d99a}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#080d19,#101a31);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}.wrap{width:min(1100px,calc(100% - 32px));margin:0 auto;padding:38px 0 60px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:30px}.brand{font-weight:900;font-size:22px}.btn{border:1px solid var(--border);background:var(--panel);color:var(--text);padding:11px 15px;border-radius:12px;text-decoration:none;cursor:pointer}.btn:hover{border-color:var(--blue)}.eyebrow{color:var(--blue);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.5px}h1{font-size:42px;margin:8px 0}.sub{color:var(--muted);line-height:1.6;max-width:760px}.grid{display:grid;grid-template-columns:1.3fr .7fr;gap:18px}.card{background:rgba(17,24,43,.94);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.card h2{margin-top:0}.row{display:grid;grid-template-columns:55px 1fr 100px 100px;gap:12px;align-items:center;border-bottom:1px solid var(--border);padding:14px 0}.row:last-child{border-bottom:0}.rank{font-size:21px;font-weight:900}.name{font-weight:800}.small{font-size:12px;color:var(--muted);margin-top:4px}.score{font-weight:900;text-align:right}.you{background:rgba(110,168,255,.08);outline:1px solid var(--blue);border-radius:12px;padding-left:10px;padding-right:10px}.pill{display:inline-block;border:1px solid var(--border);border-radius:99px;padding:4px 8px;font-size:11px;color:var(--muted)}.empty{text-align:center;color:var(--muted);padding:35px 10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:20px}.modal.hidden{display:none}.modalbox{width:min(440px,100%);background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:25px}.modalbox input{width:100%;padding:13px;border-radius:11px;border:1px solid var(--border);background:var(--panel2);color:var(--text);font-size:16px;margin:10px 0 15px}.actions{display:flex;justify-content:flex-end;gap:10px}@media(max-width:800px){.grid{grid-template-columns:1fr}.row{grid-template-columns:42px 1fr 80px}.row .extra{display:none}h1{font-size:34px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">✦ StudyHub</div><a class="btn" href="index.html">← Back to StudyHub</a></div>
+  <div class="eyebrow">Class competition</div>
+  <h1>🏆 Class Leaderboard</h1>
+  <p class="sub">See who is leading the class based on their best practice-test scores. Your results are saved under your StudyHub username.</p>
+  <div class="grid">
+    <div class="card"><h2>Top Students</h2><div id="rows"></div></div>
+    <div class="card"><h2>Your Best</h2><div id="mine"></div><button class="btn" id="change" type="button">Change Username</button></div>
+  </div>
+</div>
+<div class="modal hidden" id="modal"><div class="modalbox"><h2>Choose your username</h2><p class="sub">Your classmates will see this name on the leaderboard.</p><input id="usernameInput" maxlength="24" autocomplete="off" placeholder="e.g. Seamus"><div class="actions"><button class="btn" id="save" type="button">Continue</button></div></div></div>
+<script>
+const subjects={geometry:['△','Geometry'],algebra2:['∑','Algebra 2'],lit1:['📖','Literature 1'],biology:['🧬','Biology'],aphg:['🌎','AP Human Geography'],civics:['⚖','Civics'],spanish1:['🇪🇸','Spanish 1'],spanish2:['🇪🇸','Spanish 2']};
+function read(key, fallback){try{const v=JSON.parse(localStorage.getItem(key)||'null');return v??fallback}catch(e){return fallback}}
+function esc(v){return String(v).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+let username=localStorage.getItem('studyhubUsername')||'';
+let data=read('studyhubLeaderboard',{entries:[]}); let entries=Array.isArray(data.entries)?data.entries:[];
+function ask(force){if(username&&!force)return true;const modal=document.getElementById('modal');const input=document.getElementById('usernameInput');modal.classList.remove('hidden');input.value=username;input.focus();return false}
+function saveName(){let n=document.getElementById('usernameInput').value.trim().replace(/\s+/g,' ').slice(0,24);if(!n){alert('Please enter a username.');return}username=n;localStorage.setItem('studyhubUsername',username);document.getElementById('modal').classList.add('hidden');render()}
+function render(){if(!username){ask(false);return}const best={};for(const e of entries){if(!e||!e.username||!e.subject||!Number.isFinite(Number(e.score)))continue;const k=e.username+'__'+e.subject;if(!best[k]||Number(e.score)>Number(best[k].score))best[k]=e}const students={};Object.values(best).forEach(e=>{students[e.username]??={username:e.username,subjects:{}};students[e.username].subjects[e.subject]=e});const list=Object.values(students).map(s=>{const vals=Object.values(s.subjects);const avg=vals.length?Math.round(vals.reduce((a,e)=>a+Number(e.score),0)/vals.length):0;return {...s,avg,count:vals.length}}).sort((a,b)=>b.avg-a.avg||b.count-a.count||a.username.localeCompare(b.username));const rows=document.getElementById('rows');rows.innerHTML=list.length?list.slice(0,50).map((s,i)=>`<div class="row ${s.username===username?'you':''}"><div class="rank">${i<3?['🥇','🥈','🥉'][i]:i+1}</div><div><div class="name">${esc(s.username)} ${s.username===username?'<span class="pill">You</span>':''}</div><div class="small">${s.count} subject${s.count===1?'':'s'} completed</div></div><div class="score">${s.avg}%</div><div class="extra small">Average</div></div>`).join(''):'<div class="empty">No practice-test scores have been submitted yet. Be the first!</div>';const me=list.find(s=>s.username===username);document.getElementById('mine').innerHTML=me?`<p class="small">Class rank: <b>#${list.indexOf(me)+1}</b> · Average: <b>${me.avg}%</b></p>`+Object.values(me.subjects).sort((a,b)=>b.score-a.score).map(e=>`<div class="row"><div>${subjects[e.subject]?.[0]||'📘'}</div><div><div class="name">${esc(subjects[e.subject]?.[1]||e.subject)}</div><div class="small">Best score</div></div><div class="score">${e.score}%</div></div>`).join(''):'<div class="empty">Complete a practice test to see your scores here.</div>'}
+document.getElementById('save').onclick=saveName;document.getElementById('change').onclick=()=>ask(true);document.getElementById('usernameInput').addEventListener('keydown',e=>{if(e.key==='Enter')saveName()});render();
+</script>
+</body></html>
