@@ -1,0 +1,23 @@
+# Base44 sandbox environment for StudyHub.
+#
+# StudyHub is a static site (index.html + leaderboard.html, inline CSS/JS, no build
+# step and no package manager). The repo is bind-mounted read-only into nginx so the
+# served pages are always the cloned source: editing index.html or leaderboard.html
+# takes effect on the next page load, with no rebuild and no image rebuild.
+services:
+  web:
+    image: nginx:alpine
+    restart: on-failure
+    ports:
+      - "3000:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+      - ./.base44/nginx.conf:/etc/nginx/nginx.conf:ro
+    healthcheck:
+      # 127.0.0.1 (not localhost) so busybox wget doesn't try IPv6 ::1; probes that
+      # nginx actually serves the app.
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/index.html || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
